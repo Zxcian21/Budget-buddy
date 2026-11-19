@@ -18,6 +18,7 @@ def show_menu():
     print("6) Category breakdown")
     print("7) Spending summary")
     print("8) Account summary")
+    print("9) Set a budget per category")
     print("0) Quit")
 
 
@@ -58,6 +59,17 @@ def main():
                   " transactions (avg $" + str(core.average_transaction(txns)) + ").")
         elif choice == "8":
             print(reports.account_summary(data))
+        elif choice == "9":
+            category = input("Budget category: ").strip()
+            try:
+                amount = float(input("Budget limit ($): "))
+                core.set_category_budget(data, category, amount)
+            except ValueError as error:
+                print("Invalid budget: " + str(error))
+                continue
+            storage.save_data(data)
+            print("Status:", core.category_budget_status(data, category))
+            print("Over budget:", core.over_budget_categories(data))
         else:
             print("Please pick a number from the menu.")
 
