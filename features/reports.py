@@ -14,3 +14,22 @@ def category_report(data):
     # For now this returns an empty report so the menu never crashes.
     report = {}
     return report
+
+def monthly_summary(data):
+    """Dated monthly income/spending; legacy undated transactions are skipped."""
+    from datetime import date
+
+    months = {}
+    for transaction in data["transactions"]:
+        stamp = transaction.get("date")
+        if not isinstance(stamp, str):
+            continue
+        try:
+            month = date.fromisoformat(stamp).strftime("%Y-%m")
+        except ValueError:
+            continue
+        totals = months.setdefault(month, {"income": 0, "spending": 0})
+        amount = transaction["amount"]
+        key = "income" if amount >= 0 else "spending"
+        totals[key] = round(totals[key] + abs(amount), 2)
+    return dict(sorted(months.items()))
