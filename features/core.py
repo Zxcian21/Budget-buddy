@@ -45,3 +45,10 @@ def average_transaction(transactions):
     if not transactions:
         return 0
     return round(sum(t["amount"] for t in transactions) / len(transactions), 2)
+
+
+def big_expenses(transactions, threshold):
+    """Return expense transactions spending at least a positive threshold."""
+    if isinstance(threshold, bool) or not isinstance(threshold, (int, float)) or not (0 < threshold < float("inf")):
+        raise ValueError("threshold must be a positive finite number")
+    return [tx for tx in transactions if tx["amount"] < 0 and -tx["amount"] >= threshold]
