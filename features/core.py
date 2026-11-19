@@ -45,3 +45,13 @@ def average_transaction(transactions):
     if not transactions:
         return 0
     return round(sum(t["amount"] for t in transactions) / len(transactions), 2)
+
+
+def top_spending_category(transactions):
+    """Return the category with the most spending, or None if none exists."""
+    spent = {}
+    for tx in transactions:
+        if tx["amount"] < 0:
+            category = tx["category"]
+            spent[category] = spent.get(category, 0) - tx["amount"]
+    return max(spent, key=spent.get) if spent else None
