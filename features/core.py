@@ -45,3 +45,13 @@ def average_transaction(transactions):
     if not transactions:
         return 0
     return round(sum(t["amount"] for t in transactions) / len(transactions), 2)
+
+
+def export_transactions_csv(transactions, path):
+    """Write transactions to CSV in their original order."""
+    import csv
+
+    with open(path, "w", encoding="utf-8", newline="") as file:
+        writer = csv.DictWriter(file, fieldnames=["id", "description", "amount", "category"], extrasaction="ignore")
+        writer.writeheader()
+        writer.writerows(transactions)
