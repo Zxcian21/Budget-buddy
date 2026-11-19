@@ -18,6 +18,7 @@ def show_menu():
     print("6) Category breakdown")
     print("7) Spending summary")
     print("8) Account summary")
+    print("12) Search transactions")
     print("0) Quit")
 
 
@@ -58,6 +59,13 @@ def main():
                   " transactions (avg $" + str(core.average_transaction(txns)) + ").")
         elif choice == "8":
             print(reports.account_summary(data))
+        elif choice == "12":
+            keyword = input("Search description: ").strip()
+            matches = core.search_transactions(core.get_transactions(data), keyword)
+            if matches:
+                core.list_transactions(matches)
+            else:
+                print("No matching transactions.")
         else:
             print("Please pick a number from the menu.")
 

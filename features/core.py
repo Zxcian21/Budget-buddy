@@ -45,3 +45,8 @@ def average_transaction(transactions):
     if not transactions:
         return 0
     return round(sum(t["amount"] for t in transactions) / len(transactions), 2)
+
+def search_transactions(transactions, keyword):
+    """Find transactions containing a case-insensitive description substring."""
+    needle = keyword.casefold()
+    return [t for t in transactions if needle in t["description"].casefold()]
