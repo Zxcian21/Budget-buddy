@@ -18,6 +18,7 @@ def show_menu():
     print("6) Category breakdown")
     print("7) Spending summary")
     print("8) Account summary")
+    print("13) Export transactions to CSV")
     print("0) Quit")
 
 
@@ -58,6 +59,14 @@ def main():
                   " transactions (avg $" + str(core.average_transaction(txns)) + ").")
         elif choice == "8":
             print(reports.account_summary(data))
+        elif choice == "13":
+            filename = input("CSV output file [transactions.csv]: ").strip() or "transactions.csv"
+            try:
+                core.export_transactions_csv(core.get_transactions(data), filename)
+            except OSError as error:
+                print("Export failed: " + str(error))
+            else:
+                print("CSV exported to " + filename)
         else:
             print("Please pick a number from the menu.")
 
