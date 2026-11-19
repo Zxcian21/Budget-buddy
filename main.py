@@ -18,6 +18,7 @@ def show_menu():
     print("6) Category breakdown")
     print("7) Spending summary")
     print("8) Account summary")
+    print("11) Savings goal")
     print("0) Quit")
 
 
@@ -58,6 +59,15 @@ def main():
                   " transactions (avg $" + str(core.average_transaction(txns)) + ").")
         elif choice == "8":
             print(reports.account_summary(data))
+        elif choice == "11":
+            try:
+                goal = float(input("Savings goal ($): "))
+                core.set_savings_goal(data, goal)
+            except ValueError as error:
+                print("Invalid goal: " + str(error))
+                continue
+            storage.save_data(data)
+            print("Progress:", str(core.savings_goal_progress(data)) + "%")
         else:
             print("Please pick a number from the menu.")
 
