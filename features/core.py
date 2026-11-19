@@ -45,3 +45,15 @@ def average_transaction(transactions):
     if not transactions:
         return 0
     return round(sum(t["amount"] for t in transactions) / len(transactions), 2)
+
+def set_savings_goal(data, goal):
+    if isinstance(goal, bool) or not isinstance(goal, (int, float)) or not (0 < goal < float("inf")):
+        raise ValueError("goal must be positive and finite")
+    data["savings_goal"] = round(goal, 2)
+
+
+def savings_goal_progress(data):
+    goal = data.get("savings_goal")
+    if not isinstance(goal, (int, float)) or goal <= 0:
+        return 0
+    return round(max(0, min(100, balance(data) / goal * 100)), 2)
