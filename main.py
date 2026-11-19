@@ -18,6 +18,7 @@ def show_menu():
     print("6) Category breakdown")
     print("7) Spending summary")
     print("8) Account summary")
+    print("10) Monthly summary")
     print("0) Quit")
 
 
@@ -40,7 +41,9 @@ def main():
         elif choice == "3":
             description = input("Description: ")
             amount = float(input("Amount: "))
-            core.add_transaction(data, description, amount)
+            from datetime import date
+            transaction = core.add_transaction(data, description, amount)
+            transaction["date"] = date.today().isoformat()
             storage.save_data(data)
             print("Transaction added.")
         elif choice == "4":
@@ -58,6 +61,12 @@ def main():
                   " transactions (avg $" + str(core.average_transaction(txns)) + ").")
         elif choice == "8":
             print(reports.account_summary(data))
+        elif choice == "10":
+            summary = reports.monthly_summary(data)
+            if not summary:
+                print("No dated transactions yet.")
+            for month, totals in summary.items():
+                print(f"{month}: income ${totals['income']:.2f}, spent ${totals['spending']:.2f}")
         else:
             print("Please pick a number from the menu.")
 
